@@ -1,0 +1,52 @@
+body {
+  background-color: rgb(203, 233, 167);
+}
+
+.container {
+  padding-top: 7.5rem;
+}
+
+.img-container {
+  background-color: rgb(142, 192, 77);
+  border-radius: 0px 25px;
+}
+
+.currencys-options-container {
+  background-color: rgb(192, 245, 127);
+}
+
+.currency-values-container{
+  background-color: rgb(234, 250, 215);
+}
+
+.img-container, .currencys-options-container, .currency-values-container {
+  box-shadow: 2px 1px rgba(64, 83, 58, 0.5); 
+  border-left: 2px solid rgba(255, 255, 255, 0.9); 
+  border-top: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.currencys-options-container, .currency-values-container {
+  border-radius: 10px;
+}
+
+.form-select, .form-control {
+  border-radius: 10px;
+  box-shadow: -1px 0px rgba(64, 83, 58, 0.3); 
+  font-weight: bold;
+  color: rgb(70, 73, 70);
+}
+
+label {
+  border-radius: 2px;
+  color: rgb(70, 73, 70);
+  font-weight:bold;
+}
+
+.converted-value {
+  font-weight: 600;
+}
+
+.conversion-precision {
+  font-style: italic;
+  font-weight:500;
+}
