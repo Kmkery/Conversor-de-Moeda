@@ -1,28 +1,26 @@
-const currencysObj = () => {
+const getUrl = (selectedCurrency = 'USD') => {
   const APIKey = '69762103e707c24047f0d55b'
-  let resultedCurrencys = {}
+  return `https://v6.exchangerate-api.com/v6/${APIKey}latest/${selectedCurrency}`
+}
+
+const getCurrencies = () => {
+  let resultedCurrencies = {}
     
   return {
     setValue(value){
-      resultedCurrencys = value
+      resultedCurrencies = value
     },
     getValue(){
-      return resultedCurrencys
-    },
-    getUrl(selectedCurrency = 'USD'){
-      return `https://v6.exchangerate-api.com/v6/${APIKey}latest/${selectedCurrency}`
-    },
-    fetchData(url){
-      return fetch(url)
+      return resultedCurrencies
     }
   }
 }
   
-const currencys = currencysObj() 
+const currencies = getCurrencies() 
   
 const getAPIData = async selectedCurrency => {
   try {
-    const response = await currencys.fetchData(currencys.getUrl(selectedCurrency)) 
+    const response = await fetch(getUrl(selectedCurrency)) 
       
     if(!response.ok) {
       throw new Error('Não foi possível obter os dados')
@@ -33,8 +31,8 @@ const getAPIData = async selectedCurrency => {
   }
 }
     
-const getCurrencysData = async selectedCurrency => {
+const setCurrenciesData = async selectedCurrency => {
   const { conversion_rates } = await getAPIData(selectedCurrency)
-  currencys.setValue(conversion_rates)
+  currencies.setValue(conversion_rates)
 }
   
