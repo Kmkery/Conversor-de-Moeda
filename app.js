@@ -1,59 +1,66 @@
-const currencysOptionsContainer = document.querySelector('[data-js="currencys-options-container"]')
+const currenciesOptionsContainer = document.querySelector('[data-js="currencies-options-container"]')
 const firstCurrency = document.querySelector('[data-js="currency-one"]')
 const secondCurrency = document.querySelector('[data-js="currency-two"]')
 const precisionInput = document.querySelector('[data-js="currency-one-times"]')
 const convertedValue = document.querySelector('[data-js="converted-value"]')
 const conversionPrecision = document.querySelector('[data-js="conversion-precision"]')
 
+const getOptionsFragment = () => {
+  const arrayOfCurrencies = Object.keys(currencies.getValue())
+  const fragment = document.createDocumentFragment()
+
+  arrayOfCurrencies.forEach(currency => {
+    let option = document.createElement('option')
+    option.value = currency
+    option.label = currency
+    fragment.append(option)
+  })
+  return fragment
+}
 
 const renderConvertedCurrencyValues = () => {
-  const conversionResult = currencys.getValue()[secondCurrency.value] * precisionInput.value
+  const originalValue = currencies.getValue()[secondCurrency.value]
+  const conversionResult = originalValue * precisionInput.value
   
-  conversionPrecision.textContent = `1 ${firstCurrency.value} = ${currencys.getValue()[secondCurrency.value].toFixed(2)} ${secondCurrency.value}`
-
+  conversionPrecision.textContent = `1 ${firstCurrency.value} = ${originalValue.toFixed(2)} ${secondCurrency.value}`
   convertedValue.textContent = `${conversionResult.toFixed(2)} ${secondCurrency.value}`
 }
 
-const setDefaultCurrencys = (defaultCurrency1, defaultCurrency2) => {
+const setDefaultCurrencies = (defaultCurrency1, defaultCurrency2) => {
   firstCurrency.value = defaultCurrency1
   secondCurrency.value = defaultCurrency2
 }
 
 const createCurrencyOptions = async () => {
-  await getCurrencysData()
+  await setCurrenciesData()
 
-  const currencySelectors = [firstCurrency, secondCurrency]
-  const arrayOfCurrencys = Object.keys(currencys.getValue())
-  
-  currencySelectors.forEach(currencySelector => 
-    arrayOfCurrencys.forEach(item => {
-      let option = document.createElement('option')
-      option.label = option.value = item
-      
-      currencySelector.append(option)
-    })
-  )
+  const currencySelects = [firstCurrency, secondCurrency]
 
-  setDefaultCurrencys('USD', 'BRL')
+  currencySelects.forEach(select => {
+    const options = getOptionsFragment()
+    select.append(options)
+  })
+
+  setDefaultCurrencies('USD', 'BRL')
   renderConvertedCurrencyValues()
 }
 
-createCurrencyOptions()
+const handleInputChange = async ({ target }) => {
+  const inputValue = target.value
+  const invalidEntry = target === precisionInput && inputValue <= 0 && inputValue !==''
 
-currencysOptionsContainer.addEventListener('input', async ({ target }) => {
   if(target === firstCurrency) {
-    await getCurrencysData(target.value)
+    await setCurrenciesData(inputValue)
   }
-  if(target === precisionInput) {
-    const inputValue = target.value
-    const invalidEntry = inputValue <= 0 && inputValue !== ''
-
-    if(invalidEntry) {
-      precisionInput.value = 1 
-      alert('Insira um valor válido')
-    }
+  if(invalidEntry) {    
+    precisionInput.value = 1 
+    alert('Insira um valor válido')
   }
-
+  
   renderConvertedCurrencyValues()
-})
+}
+
+currenciesOptionsContainer.addEventListener('input', handleInputChange)
+
+createCurrencyOptions()
 
