@@ -1,5 +1,5 @@
 const getUrl = (selectedCurrency = 'USD') => {
-  const APIKey = '69762103e707c24047f0d55b'
+  const APIKey = ''
   return `https://v6.exchangerate-api.com/v6/${APIKey}latest/${selectedCurrency}`
 }
 
